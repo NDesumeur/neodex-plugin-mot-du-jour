@@ -3,7 +3,7 @@
   "name": "Mot du jour",
   "version": "1.1.2",
   "author": "NDesumeur",
-  "description": "Trouve un mot français en 6 essais : la première lettre est donnée, la longueur change chaque jour.",
+  "description": "Trouve un mot français en 6 essais : la première lettre est donnée et la longueur change chaque jour (5 à 8 lettres), le même mot pour tout le monde. Vert : bien placée, jaune : ailleurs dans le mot, gris : absente ; les accents ne comptent pas et le mot doit exister. Partie libre de 5 à 8 lettres, grille de couleurs à partager, séries et statistiques par mode.",
   "icon": "icon.png",
   "entry": "index.js",
   "view": "mot-du-jour",
