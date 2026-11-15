@@ -1,55 +1,43 @@
 // Mot du jour : ton appli d'origine (HTML et code inchangés), livrée en plugin.
 // Ses données sont dans le dossier du plugin, que NeoDex sauvegarde (synchro cloud et sauvegardes) ; à la première ouverture elle reprend ce que tu avais dans NeoDex.
 // Elle tourne dans le bac à sable de NeoDex, avec ses outils d'interface (ctx.host) et seulement les autorisations de son plugin.json.
-const HTML = "<div class=\"appWrap\">\n      <div class=\"agHead\"><span class=\"label\">Mot du jour</span><span class=\"hint\" id=\"mdInfo\"></span><div class=\"agNav\"><select class=\"f gSel\" id=\"mdMode\" title=\"Mode de jeu\"></select><button class=\"btn px\" id=\"mdShare\" title=\"Copie la grille de couleurs (sans le mot)\">PARTAGER</button><button class=\"btn main px\" id=\"mdNew\">NOUVEAU MOT</button></div></div>\n      <div class=\"mdWrap\"><div id=\"mdGrid\" class=\"mdGrid\"></div><div id=\"mdMsg\" class=\"mdMsg\"></div><div id=\"mdKeys\" class=\"mdKeys\"></div><div id=\"mdStats\" class=\"mdStats\"></div></div>\n      <div class=\"hint\">Trouve le mot en 6 essais. La première lettre est donnée et la longueur change chaque jour (5 à 8 lettres). Carré vert : bonne lettre bien placée · rond jaune : la lettre est dans le mot, ailleurs · gris : elle n'y est pas. Les accents ne comptent pas, et le mot tapé doit exister (toutes les formes : pluriels, conjugaisons). Le même mot pour tout le monde chaque jour ; en partie libre, autant de mots que tu veux. Parties, séries et statistiques sauvegardées et synchronisées. Mots : Lexique 3.83 (CC BY-SA 4.0).</div>\n    </div>";
-/*CSS-MOVED*/ const CSS = `.mdWrap{display:grid;justify-items:center;gap:12px;padding:14px;background:#05010b;box-shadow:0 0 0 3px var(--line2)}
-.mdGrid{display:grid;gap:6px}
-.mdRow{display:grid;grid-template-columns:repeat(var(--n),46px);gap:6px}
-.mdRow.shake{animation:mdShake .35s}
-.mdCell{height:46px;display:grid;place-items:center;font:18px var(--title);color:#fff;background:#160d30;box-shadow:inset 0 0 0 3px #2a1d52,inset 3px 3px 0 3px #0c0620;image-rendering:pixelated}
-.mdCell.typed{box-shadow:inset 0 0 0 3px var(--lilac),3px 3px 0 #05010b}
-.mdCell.ghost{color:#5e4d85}
-.mdCell.md2{background:#2f9a52;box-shadow:inset -4px -4px 0 #1c6a36,inset 4px 4px 0 #6ee08a}
-.mdCell.md1{background:#160d30 url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Cpath fill='%23ffc23a' d='M2 0h4v1h1v1h1v4h-1v1h-1v1h-4v-1h-1v-1h-1v-4h1v-1h1z'/%3E%3Cpath fill='%23ffe9a0' d='M2 1h2v1h-1v1h-1z'/%3E%3C/svg%3E\") center/38px 38px no-repeat;box-shadow:inset -4px -4px 0 #0c0620;color:#130a20}
-.mdCell.md0{background:#2a2440;box-shadow:inset -4px -4px 0 #1a1530,inset 4px 4px 0 #3a3458;color:#8f8fa8}
-.mdCell.flip{animation:mdFlip .45s both}
+const HTML = "<div class=\"appWrap\">\n      <div class=\"agHead\"><span class=\"label\">Mot du jour</span><span class=\"hint\" id=\"mdInfo\"></span><div class=\"agNav\"><select class=\"f gSel\" id=\"mdMode\" title=\"Mode de jeu\"></select><button class=\"btn px\" id=\"mdShare\" title=\"Copie la grille de couleurs (sans le mot)\">PARTAGER</button><button class=\"btn main px\" id=\"mdNew\">NOUVEAU MOT</button></div></div>\n      <div class=\"mdWrap\"><div id=\"mdGrid\" class=\"mdGrid\"></div><div id=\"mdMsg\" class=\"mdMsg\"></div><div id=\"mdDef\" class=\"mdDef\"></div><div id=\"mdKeys\" class=\"mdKeys\"></div><div id=\"mdStats\" class=\"mdStats\"></div></div>\n      <div class=\"hint\">Trouve le mot en 6 essais. La première lettre est donnée et la longueur change chaque jour (5 à 8 lettres). Carré vert : bonne lettre bien placée · rond jaune : la lettre est dans le mot, ailleurs · gris : elle n'y est pas. Les accents ne comptent pas, et le mot tapé doit exister (toutes les formes : pluriels, conjugaisons). Le même mot pour tout le monde chaque jour ; en partie libre, autant de mots que tu veux. À la fin, la définition du mot s'affiche (Wiktionnaire, CC BY-SA). Parties, séries et statistiques sauvegardées et synchronisées. Mots : Lexique 3.83 (CC BY-SA 4.0).</div>\n    </div>";
+/*CSS-MOVED*/ const CSS = `.mdWrap{container-type:inline-size;display:grid;justify-items:center;gap:clamp(8px,1.6vh,16px);padding:clamp(10px,2vh,20px) 12px;background:#05010b radial-gradient(#1a0f36 1px,transparent 1.5px) 0 0/8px 8px;box-shadow:0 0 0 3px var(--line2)}
+.mdGrid,.mdKeys,.mdMsg{--c:clamp(34px,min(calc((100vh - 230px) / 9.2),calc((100cqw - 30px) / (var(--n,6) * 1.16))),88px)}
+.mdGrid{display:grid;gap:calc(var(--c) * .12)}
+.mdRow{display:grid;grid-template-columns:repeat(var(--n),var(--c));gap:calc(var(--c) * .12)}
+.mdRow.shake{animation:mdShake .35s steps(6)}
+.mdCell{height:var(--c);display:grid;place-items:center;font:calc(var(--c) * .42) var(--title);color:#fff;background:#160d30;box-shadow:inset 0 0 0 calc(var(--c) * .06) #2a1d52,inset calc(var(--c) * .06) calc(var(--c) * .06) 0 calc(var(--c) * .06) #0c0620;image-rendering:pixelated;text-shadow:calc(var(--c) * .04) calc(var(--c) * .04) 0 #05010b}
+.mdCell.typed{box-shadow:inset 0 0 0 calc(var(--c) * .06) var(--lilac),calc(var(--c) * .06) calc(var(--c) * .06) 0 #05010b}
+.mdCell.ghost{color:#5e4d85;text-shadow:none}
+.mdCell.md2{background:#2f9a52;box-shadow:inset calc(var(--c) * -.08) calc(var(--c) * -.08) 0 #1c6a36,inset calc(var(--c) * .08) calc(var(--c) * .08) 0 #6ee08a}
+.mdCell.md1{background:#160d30 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Cpath fill='%23ffc23a' d='M2 0h4v1h1v1h1v4h-1v1h-1v1h-4v-1h-1v-1h-1v-4h1v-1h1z'/%3E%3Cpath fill='%23ffe9a0' d='M2 1h2v1h-1v1h-1z'/%3E%3C/svg%3E") center/84% 84% no-repeat;box-shadow:inset calc(var(--c) * -.08) calc(var(--c) * -.08) 0 #0c0620;color:#130a20;text-shadow:none}
+.mdCell.md0{background:#2a2440;box-shadow:inset calc(var(--c) * -.08) calc(var(--c) * -.08) 0 #1a1530,inset calc(var(--c) * .08) calc(var(--c) * .08) 0 #3a3458;color:#8f8fa8;text-shadow:none}
+.mdCell.flip{animation:mdFlip .3s steps(6) both}
+@keyframes mdFlip{0%,100%{transform:scaleY(1)}50%{transform:scaleY(0)}}
 @keyframes mdShake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.mdMsg{min-height:16px;color:var(--lilac)}
+.mdMsg{min-height:16px;color:var(--lilac);font:clamp(9px,calc(var(--c,40px) * .2),13px) var(--title);text-align:center;line-height:1.6}
 .mdMsg.err{color:#ff6f86}
-.mdKeys{display:grid;gap:6px}
-.mdKRow{display:flex;gap:5px;justify-content:center}
-.mdKey{min-width:34px;height:40px;font:11px var(--title);color:#fff;background:#2a1f50;border:0;box-shadow:inset -3px -3px 0 #160d30,inset 3px 3px 0 #3e3070,0 3px 0 #05010b;cursor:var(--cp,pointer)}
-.mdKey:active{transform:translateY(2px);box-shadow:inset -3px -3px 0 #160d30}
-.mdKey.wide{min-width:66px;font-size:8px}
+.mdDef{max-width:min(100%,640px);padding:10px 14px;background:#160d30;box-shadow:inset 0 0 0 3px #2a1d52,4px 4px 0 #05010b;color:#e8e0ff;font-size:15px;line-height:1.45}
+.mdDef b{font:13px var(--title);color:#ffd84a}
+.mdDef i{color:#a898d0;font-style:normal;font-size:13px}
+.mdDef:empty{display:none}
+.mdKeys{--k:clamp(28px,min(calc(var(--c) * .9),calc((100cqw - 30px) / 11)),72px);display:grid;gap:calc(var(--k) * .14)}
+.mdKRow{display:flex;gap:calc(var(--k) * .1);justify-content:center}
+.mdKey{min-width:var(--k);height:calc(var(--k) * 1.1);font:calc(var(--k) * .32) var(--title);color:#fff;background:#2a1f50;border:0;box-shadow:inset calc(var(--k) * -.08) calc(var(--k) * -.08) 0 #160d30,inset calc(var(--k) * .08) calc(var(--k) * .08) 0 #3e3070,0 calc(var(--k) * .08) 0 #05010b;cursor:var(--cp,pointer)}
+.mdKey:active{transform:translateY(2px);box-shadow:inset calc(var(--k) * -.08) calc(var(--k) * -.08) 0 #160d30}
+.mdKey.wide{min-width:calc(var(--k) * 1.9);font-size:calc(var(--k) * .22)}
 .mdKey:hover{background:#3a2a6e}
-.mdKey.ok{background:#2f9a52;box-shadow:inset -3px -3px 0 #1c6a36,inset 3px 3px 0 #6ee08a,0 3px 0 #05010b}
+.mdKey.ok{background:#2f9a52;box-shadow:inset calc(var(--k) * -.08) calc(var(--k) * -.08) 0 #1c6a36,inset calc(var(--k) * .08) calc(var(--k) * .08) 0 #6ee08a,0 calc(var(--k) * .08) 0 #05010b}
 .mdKey.near{background:#c99a1e;color:#130a20}
 .mdKey.no{background:#17122a;color:#5e5470}
-.mdStats{display:grid;gap:3px;width:min(100%,360px);font-size:13px;color:var(--lilac)}
+.mdStats{display:grid;gap:3px;width:min(100%,420px);font-size:13px;color:var(--lilac)}
 .mdNums{margin-bottom:4px;text-align:center}
 .mdBar{display:flex;gap:6px;align-items:center}
 .mdBar span{width:12px}
 .mdBar b{background:#3a2a6e;color:#fff;text-align:right;padding:0 5px;font-weight:normal}
 .mdBar b.cur{background:#2f9a52}
 .gSel{width:auto;font-size:14px;padding:6px 10px;margin-right:8px}
-.shGrid td.num{text-align:right}
-.mdRow{display:grid;gap:6px}
-.mdRow.head{position:sticky;top:0}
-.mdCell{display:flex;align-items:center;justify-content:center;gap:4px;min-height:54px;padding:6px;text-align:center;font-size:12px;overflow-wrap:break-word;hyphens:auto;min-width:0;color:#fff;background:#2a1d52;box-shadow:inset 0 -3px 0 rgba(0,0,0,.35);animation:mdFlip .35s steps(4) backwards}
-.mdCell.wide img{width:32px;height:32px}
-.mdCell.ok{background:#2f8f5a}
-.mdCell.part{background:#c0862a}
-.mdCell.no{background:#9a2a44}
-.mdCell i{font-style:normal;font-size:18px;color:#ffd07a}
-.mdCell.wide{justify-content:flex-start;padding:10px 14px;min-height:0;font-size:15px}
-.mdRow .mdCell:nth-child(2){animation-delay:.05s}
-.mdRow .mdCell:nth-child(3){animation-delay:.1s}
-.mdRow .mdCell:nth-child(4){animation-delay:.15s}
-.mdRow .mdCell:nth-child(5){animation-delay:.2s}
-.mdRow .mdCell:nth-child(6){animation-delay:.25s}
-.mdRow .mdCell:nth-child(7){animation-delay:.3s}
-.mdRow .mdCell:nth-child(8){animation-delay:.35s}
-.mdRow .mdCell:nth-child(9){animation-delay:.4s}
 `;  // le style de ce plugin (il utilise les variables du thème de NeoDex)
 export default async function (ctx) {
   const view = ctx.view;
@@ -121,6 +109,38 @@ function mdScore(guess, word) {
   return res;
 }
 let md = null;  // {mode, word (with accents), plain, guesses: [], typed, over, won}
+let mdAc = null;
+function mdTone(f, d = .09, type = 'square', v = .05) {  // un petit son 8 bits, sans fichier
+  try { mdAc ??= new AudioContext(); const t = mdAc.currentTime, o = mdAc.createOscillator(), gn = mdAc.createGain(); o.type = type; o.frequency.value = f; gn.gain.setValueAtTime(v, t); gn.gain.exponentialRampToValueAtTime(.001, t + d); o.connect(gn).connect(mdAc.destination); o.start(t); o.stop(t + d); } catch {}
+}
+// la définition, prise dans la section française du Wiktionnaire : la nature du mot et ses deux premiers sens
+const MD_DEF = {};
+function mdWikiClean(s) {
+  for (let k = 0; k < 4; k++) s = s.replace(/\{\{(?:lien|w|l|lien web)\|([^|{}]*)[^{}]*\}\}/g, '$1').replace(/\{\{[^{}]*\}\}/g, '');
+  return s.replace(/\[\[(?:[^\]|]*\|)?([^\]]*)\]\]/g, '$1').replace(/'{2,}/g, '').replace(/<[^>]+>/g, '').replace(/\s+([,.;:])/g, '$1').replace(/\s{2,}/g, ' ').trim();
+}
+function mdParseDef(w) {  // le texte du Wiktionnaire → {type, defs}, ou null
+  const i = w.indexOf('{{langue|fr}}'); if (i < 0) return null;
+  const fr = w.slice(i).split(/\n==\s*\{\{langue\|/)[0];
+  for (const m of fr.matchAll(/\n===\s*\{\{S\|([^|}]+)\|fr([^}]*)\}\}\s*===([\s\S]*?)(?=\n===?[^=]|$)/g)) {
+    if (/étymologie|prononciation|références|voir|anagrammes/.test(m[1])) continue;
+    const defs = m[3].split('\n').filter(l => /^#(?![*:#])/.test(l)).map(l => mdWikiClean(l.slice(1))).filter(d => d.length > 1).slice(0, 2);
+    if (defs.length) return {type: m[1][0].toUpperCase() + m[1].slice(1) + (/flexion/.test(m[2]) ? ' (forme)' : ''), defs};
+  }
+  return null;
+}
+async function mdDefine(word) {
+  const w = word.toLowerCase();
+  return MD_DEF[w] ??= fetch('https://fr.wiktionary.org/w/api.php?action=parse&format=json&formatversion=2&prop=wikitext&redirects=1&origin=*&page=' + encodeURIComponent(w))
+    .then(r => r.json()).then(j => mdParseDef(j.parse?.wikitext || '')).catch(() => { delete MD_DEF[w]; return undefined; });
+}
+async function mdShowDef() {
+  const box = $('mdDef'); box.replaceChildren(); $('mdKeys').style.display = md && mdDone() ? 'none' : ''; if (!md || !mdDone()) return;
+  const word = md.cur.word; box.append(el('i', '', 'Définition de « ' + word + ' »…'));
+  const d = await mdDefine(word); if (md?.cur.word !== word || !mdDone()) return;
+  if (d) box.replaceChildren(el('b', '', word.toUpperCase()), ' ', el('i', '', '· ' + d.type), ...d.defs.map((t, k) => el('div', '', (d.defs.length > 1 ? (k + 1) + '. ' : '') + t)), el('i', '', 'Wiktionnaire (CC BY-SA)'));
+  else box.replaceChildren(el('i', '', d === null ? 'Pas de définition trouvée pour « ' + word + ' ».' : 'Définition indisponible (pas de connexion).'));
+}
 function mdStart(mode = mdSave().mode, fresh = false) {
   const s = mdSave(); s.mode = mode;
   if (mode === 'jour') {
@@ -131,12 +151,12 @@ function mdStart(mode = mdSave().mode, fresh = false) {
     if (fresh || !s.free || s.free.done || mdPlain(s.free.word).length !== s.freeLen) { const list = mdAnswers(s.freeLen); s.free = {word: list[Math.floor(Math.random() * list.length)], guesses: []}; }
     md = {mode, cur: s.free};
   }
-  md.plain = mdPlain(md.cur.word); md.typed = md.plain[0];
-  saveGames(); mdRender(); mdMsg('');
+  md.plain = mdPlain(md.cur.word); md.typed = md.plain[0]; md.busy = 0;
+  saveGames(); mdRender(); mdMsg(mdDone() ? mdEndText() : '');
 }
 const mdDone = () => md.cur.done;
 function mdType(k) {
-  if (!md || mdDone()) return;
+  if (!md || mdDone() || md.busy) return;
   const n = md.plain.length;
   if (k === '⌫' || k === 'Backspace') { if (md.typed.length > 1) md.typed = md.typed.slice(0, -1); }
   else if (k === '⏎' || k === 'Enter') return mdEnter();
@@ -149,7 +169,7 @@ function mdEnter() {
   if (!mdValid(g)) return mdMsg('« ' + g + ' » n\'est pas dans le dictionnaire', true);
   md.cur.guesses.push(g); md.typed = md.plain[0];
   const won = g === md.plain;
-  if (won || md.cur.guesses.length >= MD.tries) mdFinish(won); else sfx('click');
+  if (won || md.cur.guesses.length >= MD.tries) mdFinish(won);
   saveGames(); mdRender(true);
 }
 function mdFinish(won) {
@@ -161,9 +181,8 @@ function mdFinish(won) {
     st.streak = won ? (st.last === mdDay(y) ? st.streak + 1 : 1) : 0; st.last = md.cur.day;
   } else st.streak = won ? st.streak + 1 : 0;
   st.max = Math.max(st.max, st.streak);
-  sfx(won ? 'launch' : 'error');
-  mdMsg(won ? ['Bravo !', 'Superbe !', 'Bien joué !', 'Pas mal !', 'Ouf !', 'De justesse !'][md.cur.guesses.length - 1] + ' Le mot était « ' + md.cur.word + ' ».' : 'Perdu… le mot était « ' + md.cur.word + ' ».');
 }
+const mdEndText = () => md.cur.won ? ['Bravo !', 'Superbe !', 'Bien joué !', 'Pas mal !', 'Ouf !', 'De justesse !'][md.cur.guesses.length - 1] + ' Le mot était « ' + md.cur.word + ' ».' : 'Perdu… le mot était « ' + md.cur.word + ' ».';
 function mdMsg(t, err) {
   const m = $('mdMsg'); m.textContent = t; m.classList.toggle('err', !!err);
   if (err) { sfx('error'); const row = $('mdGrid').children[md.cur.guesses.length]; row?.classList.remove('shake'); void row?.offsetWidth; row?.classList.add('shake'); }
@@ -177,23 +196,35 @@ function mdTypingRow() {
   [...row.children].forEach((c, i) => { const t = md.typed[i]; c.textContent = t || known[i]; c.className = 'mdCell' + (t ? ' typed' : known[i] ? ' ghost' : ''); });
 }
 function mdRender(reveal) {
-  const n = md.plain.length, grid = $('mdGrid'), keys = {};
-  grid.style.setProperty('--n', n);
+  const n = md.plain.length, grid = $('mdGrid'), keys = {}, last = md.cur.guesses.length - 1, cells = [];
+  grid.parentElement.style.setProperty('--n', n);
   grid.replaceChildren(...Array.from({length: MD.tries}, (_, r) => {
     const row = el('div', 'mdRow'), g = md.cur.guesses[r], sc = g && mdScore(g, md.plain);
     for (let i = 0; i < n; i++) {
       const c = el('div', 'mdCell', g ? g[i] : '');
-      if (g) { c.classList.add('md' + sc[i]); keys[g[i]] = Math.max(keys[g[i]] ?? 0, sc[i]); if (reveal && r === md.cur.guesses.length - 1) { c.classList.add('flip'); c.style.animationDelay = i * 0.12 + 's'; } }
+      if (g && reveal && r === last) { c.classList.add('typed'); cells.push([c, sc[i]]); }
+      else if (g) { c.classList.add('md' + sc[i]); keys[g[i]] = Math.max(keys[g[i]] ?? 0, sc[i]); }
       row.append(c);
     }
     return row;
   }));
-  mdTypingRow();
+  mdTypingRow(); mdKeys(keys);
+  if (cells.length) {  // les lettres se retournent une par une, chacune avec son son ; le clavier, le message et la définition viennent après
+    const run = md.busy = Date.now();
+    cells.forEach(([c, s], i) => setTimeout(() => { if (md.busy !== run) return; c.classList.add('flip'); setTimeout(() => { c.classList.remove('typed'); c.classList.add('md' + s); mdTone([196, 523, 784][s] * (s === 2 ? 1 + i * .06 : 1), .1, s ? 'square' : 'triangle'); }, 150); }, i * 280));
+    setTimeout(() => { if (md.busy !== run) return; md.busy = 0; const g = md.cur.guesses[last]; mdScore(g, md.plain).forEach((s, i) => { keys[g[i]] = Math.max(keys[g[i]] ?? 0, s); }); mdKeys(keys); mdTypingRow();
+      if (mdDone()) { mdMsg(mdEndText()); mdShowDef(); if (md.cur.won) [523, 659, 784, 1047].forEach((f, k) => setTimeout(() => mdTone(f, .16, 'triangle', .06), k * 110)); else mdTone(147, .5, 'sawtooth', .04); } }, n * 280 + 200);
+  } else mdShowDef();
+  mdStatsRender();
+}
+function mdKeys(keys) {
   $('mdKeys').replaceChildren(...MD.keys.map(line => { const row = el('div', 'mdKRow');
-    for (const k of line) { const b = el('button', 'mdKey' + (k === '⏎' || k === '⌫' ? ' wide' : '') + (keys[k] != null ? ' ' + ['no', 'near', 'ok'][keys[k]] : ''), k === '⏎' ? 'ENTRÉE' : k);
+    for (const k of line) { const b = el('button', 'mdKey' + (k === '⏎' || k === '⌫' ? ' wide' : '') + (keys[k] != null ? ' ' + ['no', 'near', 'ok'][keys[k]] : ''), k === '⏎' ? 'ENTRÉE' : k === '⌫' ? 'EFFACER' : k);
       b.title = k === '⏎' ? 'Valider (Entrée)' : k === '⌫' ? 'Effacer (Retour arrière)' : ''; b.onclick = () => { mdType(k); b.blur(); }; row.append(b); }
     return row; }));
-  const s = mdSave(), st = s.stats[md.mode === 'jour' ? 'jour' : 'libre'], top = Math.max(1, ...st.dist);
+}
+function mdStatsRender() {
+  const n = md.plain.length, s = mdSave(), st = s.stats[md.mode === 'jour' ? 'jour' : 'libre'], top = Math.max(1, ...st.dist);
   $('mdStats').replaceChildren(
     el('div', 'mdNums', `${st.played} parties · ${st.played ? Math.round(st.won / st.played * 100) : 0} % trouvés · série ${st.streak} · meilleure série ${st.max}`),
     ...st.dist.map((v, i) => { const r = el('div', 'mdBar'); r.append(el('span', '', String(i + 1)), Object.assign(el('b', md.cur.done && md.cur.won && md.cur.guesses.length === i + 1 ? 'cur' : '', String(v)), {style: `width:${8 + v / top * 92}%`})); return r; }));
@@ -220,6 +251,8 @@ $('mdMode').onchange = () => { const v = $('mdMode').value; if (v !== 'jour') md
 $('mdNew').onclick = () => { if (md.mode !== 'jour' && md.cur.guesses.length && !mdDone()) mdFinish(false); mdStart('libre', true); $('mdNew').blur(); };
 $('mdShare').onclick = () => { navigator.clipboard.writeText(mdShareText()).then(() => toast('Résultat copié')); $('mdShare').blur(); };
 // self-check: double letters are only counted once, the dictionary knows its words, the daily word is fixed for a day
+console.assert(JSON.stringify(mdParseDef("== {{langue|fr}} ==\n=== {{S|étymologie}} ===\n: Du latin.\n=== {{S|nom|fr}} ===\n'''maison''' {{f}}\n# {{édifices|fr}} [[bâtiment|Bâtiment]] servant de [[logis]].\n#* {{exemple|Une maison.}}\n# [[famille|Famille]].\n== {{langue|en}} ==\n# no")) === '{"type":"Nom","defs":["Bâtiment servant de logis.","Famille."]}', 'mot du jour : définition');
+$('mdGrid').__md = {st: () => md, define: mdDefine, parse: mdParseDef, play: w => { const s = mdSave(); s.freeLen = mdPlain(w).length; s.free = {word: w, guesses: []}; mdStart('libre'); }};
 console.assert(mdScore('ALLEE', 'BALLE').join('') === '11202' && mdScore('TASSE', 'ASSEZ').join('') === '01211' && mdValid('MAISON') && mdValid('MANGEONS') && !mdValid('XQZWV')
   && mdDaily('2026-10-25') === mdDaily('2026-10-25') && mdAnswers(7).every(w => mdValid(mdPlain(w))), 'mot du jour');  // (non indenté : les textes sur plusieurs lignes restent exactement les tiens)
   // ---- fin ----

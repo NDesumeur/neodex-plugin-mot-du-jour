@@ -18,6 +18,12 @@ After each try, every letter gets a colour:
 
 The on-screen keyboard keeps these colours to help you. After 6 missed tries, the word is revealed.
 
+## On screen
+
+- The cells and the keyboard are drawn in pixel art and grow with the window, from a small laptop to a big screen.
+- When you confirm, the letters **flip one by one**, each with a small sound (high if well placed, low if not in the word); the keyboard is coloured afterwards.
+- At the end of the game, won or lost, the **word's definition** takes the keyboard's place: its kind (noun, verb…) and its first two meanings, from the French Wiktionary. It needs a connection; otherwise a message says so.
+
 ## Modes
 
 - **Word of the day**: one word per day, the same for everyone; the new one arrives at midnight. Your daily game is kept if you close NeoDex.

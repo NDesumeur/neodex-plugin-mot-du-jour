@@ -18,6 +18,12 @@ Après chaque essai, chaque lettre prend une couleur :
 
 Le clavier à l'écran garde ces couleurs pour t'aider. Au bout de 6 essais ratés, le mot est dévoilé.
 
+## Le jeu à l'écran
+
+- Les cases et le clavier sont dessinés en pixel art et grandissent avec la fenêtre, du petit portable au grand écran.
+- Quand tu valides, les lettres se **retournent une par une**, chacune avec un petit son (aigu si elle est bien placée, grave si elle n'est pas dans le mot) ; le clavier se colore ensuite.
+- À la fin de la partie, gagnée ou perdue, la **définition du mot** prend la place du clavier : sa nature (nom, verbe…) et ses deux premiers sens, pris sur le Wiktionnaire. Il faut une connexion ; sinon un message le dit.
+
 ## Les modes
 
 - **Mot du jour** : un mot par jour, le même pour tout le monde ; le nouveau arrive à minuit. Ta partie du jour est gardée si tu fermes NeoDex.
