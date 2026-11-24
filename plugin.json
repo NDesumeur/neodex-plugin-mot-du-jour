@@ -1,16 +1,19 @@
 {
   "id": "neodex.motdujour",
   "name": "Mot du jour",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "author": "NDesumeur",
-  "description": "Trouve un mot français en 6 essais : la première lettre est donnée et la longueur change chaque jour (5 à 8 lettres), le même mot pour tout le monde. Vert : bien placée, jaune : ailleurs dans le mot, gris : absente ; les accents ne comptent pas et le mot doit exister. Partie libre de 5 à 8 lettres, grille de couleurs à partager, séries et statistiques par mode. Grandes cases et gros clavier en pixel art à la taille de l'écran, lettres qui se retournent une par une avec un son, et la définition du mot à la fin (Wiktionnaire).",
+  "description": "Trouve un mot français en 6 essais : la première lettre est donnée et la longueur change chaque jour (5 à 8 lettres), le même mot pour tout le monde. Vert : bien placée, jaune : ailleurs dans le mot, gris : absente ; les accents ne comptent pas et le mot doit exister. Partie libre de 5 à 8 lettres, grille de couleurs à partager, séries et statistiques par mode. Grandes cases et gros clavier en pixel art à la taille de l'écran, lettres qui se retournent une par une avec un son, et la définition du mot à la fin (Wiktionnaire). Trouve un mot français en 6 essais : la première lettre est donnée et la longueur change chaque jour (5 à 8 lettres), le même mot pour tout le monde. Vert : bien placée, jaune : ailleurs dans le mot, gris : absente ; les accents ne comptent pas et le mot doit exister. Partie libre de 5 à 8 lettres, grille de couleurs à partager, séries et statistiques par mode. Lettres qui se retournent une par une avec un son, et à la fin le mot expliqué : sa définition et son origine (Wiktionnaire).",
   "icon": "icon.png",
   "entry": "index.js",
   "view": "mot-du-jour",
   "neobase": ">=4.0.0",
   "type": "app",
   "category": "Jeux",
-  "compatibility": ["windows", "linux"],
+  "compatibility": [
+    "windows",
+    "linux"
+  ],
   "syncMode": "progression",
   "syncInfo": "Série, statistiques, partie du jour.",
   "mobile": false,

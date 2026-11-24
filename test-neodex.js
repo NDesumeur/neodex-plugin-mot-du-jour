@@ -24,6 +24,7 @@ module.exports = async ({ pj, sleep }) => {
   // la définition : prise en ligne (si la connexion manque, un message le dit)
   let def = '';
   for (let i = 0; i < 20 && !/Bâtiment|indisponible|Pas de définition/i.test(def); i++) { await sleep(300); def = await pj(`document.getElementById('mdDef').textContent`); }
+  if (/Bâtiment/i.test(def) && !/Origine : .*latin/.test(def)) throw new Error('étymologie de maison : « ' + def + ' »');
   if (!/Bâtiment/i.test(def)) { if (/indisponible/.test(def)) console.log('définition : pas de connexion'); else throw new Error('définition de maison : « ' + def + ' »'); }
   await shot('fin');
   const errs = await pj(`window.__e.join(' | ')`); if (errs) throw new Error('erreur : ' + errs);

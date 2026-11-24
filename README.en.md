@@ -4,6 +4,10 @@ A word game: find a French word in 6 tries. The first letter is given, the lengt
 
 *Version française : [README.md](README.md)*
 
+## The word explained (new in 1.3.0)
+
+At the end of the game, under the Wiktionary definition, an **Origin** line tells where the word comes from: when it first appeared and the languages it went through (for example « maison »: around 980, from Latin mānsiō, “place of stay”).
+
 ## How to play
 
 - Type a word of the right length on your keyboard, or with the on-screen keyboard, then confirm with **Enter**. **Backspace** deletes a letter.

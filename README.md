@@ -4,6 +4,10 @@ Un jeu de mots : trouve un mot français en 6 essais. La première lettre est do
 
 *English version: [README.en.md](README.en.md)*
 
+## Le mot expliqué (nouveau en 1.3.0)
+
+À la fin de la partie, sous la définition du Wiktionnaire, une ligne **Origine** raconte d'où vient le mot : sa date d'apparition et les langues par lesquelles il est passé (par exemple « maison » : vers 980, du latin mānsiō, « lieu de séjour »).
+
 ## Comment jouer
 
 - Tape un mot de la bonne longueur au clavier, ou avec le clavier à l'écran, puis valide avec **Entrée**. **Retour arrière** efface une lettre.

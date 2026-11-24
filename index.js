@@ -21,7 +21,7 @@ const HTML = "<div class=\"appWrap\">\n      <div class=\"agHead\"><span class=\
 .mdDef{max-width:min(100%,640px);padding:10px 14px;background:#160d30;box-shadow:inset 0 0 0 3px #2a1d52,4px 4px 0 #05010b;color:#e8e0ff;font-size:15px;line-height:1.45}
 .mdDef b{font:13px var(--title);color:#ffd84a}
 .mdDef i{color:#a898d0;font-style:normal;font-size:13px}
-.mdDef:empty{display:none}
+.mdDef:empty{display:none}.mdDef .mdEty{margin-top:6px;color:#c8bce8;font-size:13px}
 .mdKeys{--k:clamp(28px,min(calc(var(--c) * .9),calc((100cqw - 30px) / 11)),72px);display:grid;gap:calc(var(--k) * .14)}
 .mdKRow{display:flex;gap:calc(var(--k) * .1);justify-content:center}
 .mdKey{min-width:var(--k);height:calc(var(--k) * 1.1);font:calc(var(--k) * .32) var(--title);color:#fff;background:#2a1f50;border:0;box-shadow:inset calc(var(--k) * -.08) calc(var(--k) * -.08) 0 #160d30,inset calc(var(--k) * .08) calc(var(--k) * .08) 0 #3e3070,0 calc(var(--k) * .08) 0 #05010b;cursor:var(--cp,pointer)}
@@ -119,13 +119,33 @@ function mdWikiClean(s) {
   for (let k = 0; k < 4; k++) s = s.replace(/\{\{(?:lien|w|l|lien web)\|([^|{}]*)[^{}]*\}\}/g, '$1').replace(/\{\{[^{}]*\}\}/g, '');
   return s.replace(/\[\[(?:[^\]|]*\|)?([^\]]*)\]\]/g, '$1').replace(/'{2,}/g, '').replace(/<[^>]+>/g, '').replace(/\s+([,.;:])/g, '$1').replace(/\s{2,}/g, ' ').trim();
 }
-function mdParseDef(w) {  // le texte du Wiktionnaire → {type, defs}, ou null
+// l'étymologie (la première ligne de la section) : les modèles du Wiktionnaire les plus courants mis en mots, les autres enlevés
+const MD_LANG = {frm: 'moyen français', fro: 'ancien français', la: 'latin', grc: 'grec ancien', el: 'grec', it: 'italien', frk: 'francique', en: 'anglais', de: 'allemand', es: 'espagnol', pt: 'portugais', ar: 'arabe', nl: 'néerlandais', oc: 'occitan', pro: 'ancien occitan', gaul: 'gaulois', 'la-bas': 'bas latin', 'la-tar': 'latin tardif', 'la-mediev': 'latin médiéval', ang: 'vieil anglais', non: 'vieux norrois', gem: 'germanique', 'ine-pro': 'indo-européen', he: 'hébreu', tr: 'turc', fa: 'persan', ja: 'japonais', zh: 'chinois', ru: 'russe', br: 'breton', ca: 'catalan', nap: 'napolitain', pcd: 'picard', nrf: 'normand', ht: 'créole haïtien', sa: 'sanskrit', hi: 'hindi', fr: 'français'};
+function mdParseEty(fr) {
+  const m = fr.match(/\n===\s*\{\{S\|étymologie\}\}\s*===\s*\n([\s\S]*?)(?=\n==|$)/); if (!m) return '';
+  let t = (m[1].split('\n').find(l => /^:\s*\S/.test(l)) || '').slice(1);
+  if (!t || /ébauche-étym|manquante|\{\{ébauche/.test(t)) return '';
+  const args = b => { const pos = [], named = {}; b.split('|').slice(1).forEach(p => { const k = p.match(/^\s*([\w-]+)\s*=(.*)$/); if (k) named[k[1]] = k[2].trim(); else pos.push(p.trim()); }); return {pos, named}; };
+  t = t.replace(/<ref[^>/]*\/>/g, '').replace(/<ref[^>]*>[\s\S]*?<\/ref>/g, '').replace(/\{\{R\|[^{}]*\}\}/g, '');
+  for (let k = 0; k < 3; k++) t = t.replace(/\{\{([^{}|]+)(\|[^{}]*)?\}\}/g, (all, name, rest = '') => {
+    const {pos, named} = args(rest); name = name.trim();
+    if (name === 'étyl') { const w = named.mot || pos[2] || '', sens = named.sens || pos[4] || ''; return (MD_LANG[pos[0]] || '') + (w ? ' ' + (named.dif || w) : '') + (sens ? ' (« ' + sens + ' »)' : ''); }
+    if (name === 'date' || name === 'siècle') { const v = pos.find(Boolean); return v ? '(' + (name === 'siècle' ? v.replace(/^([IVXL]+)$/, '$1e') + ' siècle' : v) + ')' : ''; }
+    if (name === 'recons') return '*' + (pos.filter(Boolean).pop() || '');
+    if (name === 'lien' || name === 'l' || name === 'w' || name === 'term' || name === 'lang') return (name === 'lang' ? pos[1] : pos[0]) || '';
+    return '';
+  });
+  t = mdWikiClean(t).replace(/\(\s*\)/g, '').replace(/\s{2,}/g, ' ').replace(/^\s*[,.;]\s*/, '').trim();
+  if (t.length > 320) { const cut = t.lastIndexOf('. ', 320); t = cut > 80 ? t.slice(0, cut + 1) : t.slice(0, 317) + '…'; }
+  return t.length > 8 ? t[0].toUpperCase() + t.slice(1) : '';
+}
+function mdParseDef(w) {  // le texte du Wiktionnaire → {type, defs, ety}, ou null
   const i = w.indexOf('{{langue|fr}}'); if (i < 0) return null;
   const fr = w.slice(i).split(/\n==\s*\{\{langue\|/)[0];
   for (const m of fr.matchAll(/\n===\s*\{\{S\|([^|}]+)\|fr([^}]*)\}\}\s*===([\s\S]*?)(?=\n===?[^=]|$)/g)) {
     if (/étymologie|prononciation|références|voir|anagrammes/.test(m[1])) continue;
     const defs = m[3].split('\n').filter(l => /^#(?![*:#])/.test(l)).map(l => mdWikiClean(l.slice(1))).filter(d => d.length > 1).slice(0, 2);
-    if (defs.length) return {type: m[1][0].toUpperCase() + m[1].slice(1) + (/flexion/.test(m[2]) ? ' (forme)' : ''), defs};
+    if (defs.length) return {type: m[1][0].toUpperCase() + m[1].slice(1) + (/flexion/.test(m[2]) ? ' (forme)' : ''), defs, ety: mdParseEty(fr)};
   }
   return null;
 }
@@ -138,7 +158,7 @@ async function mdShowDef() {
   const box = $('mdDef'); box.replaceChildren(); $('mdKeys').style.display = md && mdDone() ? 'none' : ''; if (!md || !mdDone()) return;
   const word = md.cur.word; box.append(el('i', '', 'Définition de « ' + word + ' »…'));
   const d = await mdDefine(word); if (md?.cur.word !== word || !mdDone()) return;
-  if (d) box.replaceChildren(el('b', '', word.toUpperCase()), ' ', el('i', '', '· ' + d.type), ...d.defs.map((t, k) => el('div', '', (d.defs.length > 1 ? (k + 1) + '. ' : '') + t)), el('i', '', 'Wiktionnaire (CC BY-SA)'));
+  if (d) box.replaceChildren(el('b', '', word.toUpperCase()), ' ', el('i', '', '· ' + d.type), ...d.defs.map((t, k) => el('div', '', (d.defs.length > 1 ? (k + 1) + '. ' : '') + t)), ...(d.ety ? [el('div', 'mdEty', 'Origine : ' + d.ety)] : []), el('i', '', 'Wiktionnaire (CC BY-SA)'));
   else box.replaceChildren(el('i', '', d === null ? 'Pas de définition trouvée pour « ' + word + ' ».' : 'Définition indisponible (pas de connexion).'));
 }
 function mdStart(mode = mdSave().mode, fresh = false) {
@@ -251,7 +271,7 @@ $('mdMode').onchange = () => { const v = $('mdMode').value; if (v !== 'jour') md
 $('mdNew').onclick = () => { if (md.mode !== 'jour' && md.cur.guesses.length && !mdDone()) mdFinish(false); mdStart('libre', true); $('mdNew').blur(); };
 $('mdShare').onclick = () => { navigator.clipboard.writeText(mdShareText()).then(() => toast('Résultat copié')); $('mdShare').blur(); };
 // self-check: double letters are only counted once, the dictionary knows its words, the daily word is fixed for a day
-console.assert(JSON.stringify(mdParseDef("== {{langue|fr}} ==\n=== {{S|étymologie}} ===\n: Du latin.\n=== {{S|nom|fr}} ===\n'''maison''' {{f}}\n# {{édifices|fr}} [[bâtiment|Bâtiment]] servant de [[logis]].\n#* {{exemple|Une maison.}}\n# [[famille|Famille]].\n== {{langue|en}} ==\n# no")) === '{"type":"Nom","defs":["Bâtiment servant de logis.","Famille."]}', 'mot du jour : définition');
+console.assert(JSON.stringify(mdParseDef("== {{langue|fr}} ==\n=== {{S|étymologie}} ===\n: {{siècle|lang=fr|X}} Du {{étyl|la|fr|mot=mansio|sens=séjour}}{{R|TLFi}}.\n=== {{S|nom|fr}} ===\n'''maison''' {{f}}\n# {{édifices|fr}} [[bâtiment|Bâtiment]] servant de [[logis]].\n#* {{exemple|Une maison.}}\n# [[famille|Famille]].\n== {{langue|en}} ==\n# no")) === '{"type":"Nom","defs":["Bâtiment servant de logis.","Famille."],"ety":"(Xe siècle) Du latin mansio (« séjour »)."}', 'mot du jour : définition');
 $('mdGrid').__md = {st: () => md, define: mdDefine, parse: mdParseDef, play: w => { const s = mdSave(); s.freeLen = mdPlain(w).length; s.free = {word: w, guesses: []}; mdStart('libre'); }};
 console.assert(mdScore('ALLEE', 'BALLE').join('') === '11202' && mdScore('TASSE', 'ASSEZ').join('') === '01211' && mdValid('MAISON') && mdValid('MANGEONS') && !mdValid('XQZWV')
   && mdDaily('2026-10-25') === mdDaily('2026-10-25') && mdAnswers(7).every(w => mdValid(mdPlain(w))), 'mot du jour');  // (non indenté : les textes sur plusieurs lignes restent exactement les tiens)

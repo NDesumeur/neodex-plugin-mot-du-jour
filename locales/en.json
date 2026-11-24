@@ -35,7 +35,6 @@
  "Série, statistiques, partie du jour.": "Series, statistics, part of the day.",
  "TASSE": "CUP",
  "Trouve le mot en 6 essais. La première lettre est donnée et la longueur change chaque jour (5 à 8 lettres). Carré vert : bonne lettre bien placée · rond jaune : la lettre est dans le mot, ailleurs · gris : elle n'y est pas. Les accents ne comptent pas, et le mot tapé doit exister (toutes les formes : pluriels, conjugaisons). Le même mot pour tout le monde chaque jour ; en partie libre, autant de mots que tu veux. À la fin, la définition du mot s'affiche (Wiktionnaire, CC BY-SA). Parties, séries et statistiques sauvegardées et synchronisées. Mots : Lexique 3.83 (CC BY-SA 4.0).": "Find the word in 6 tries. The first letter is given and the length changes every day (5 to 8 letters). Green square: good letter, well placed · yellow circle: the letter is in the word, elsewhere · gray: it is not there. Accents do not count, and the typed word must exist (all forms: plurals, conjugations). The same word for everyone every day; free part, as many words as you want. At the end, the word's definition is shown (Wiktionary, CC BY-SA). Games, series and statistics saved and synchronized. Words: Glossary 3.83 (CC BY-SA 4.0).",
- "Trouve un mot français en 6 essais : la première lettre est donnée et la longueur change chaque jour (5 à 8 lettres), le même mot pour tout le monde. Vert : bien placée, jaune : ailleurs dans le mot, gris : absente ; les accents ne comptent pas et le mot doit exister. Partie libre de 5 à 8 lettres, grille de couleurs à partager, séries et statistiques par mode. Grandes cases et gros clavier en pixel art à la taille de l'écran, lettres qui se retournent une par une avec un son, et la définition du mot à la fin (Wiktionnaire).": "Find a French word in 6 tries: the first letter is given and the length changes every day (5 to 8 letters), the same word for everyone. Green: right place, yellow: elsewhere in the word, grey: not in it; accents do not count and the word must exist. A free mode with 5 to 8 letters, a shareable colour grid, streaks and statistics per mode. Big cells and a big pixel-art keyboard that fit the screen, letters that flip one by one with a sound, and the word's definition at the end (Wiktionary).",
  "Valider (Entrée)": "Validate (Enter)",
  "Wiktionnaire (CC BY-SA)": "Wiktionary (CC BY-SA)",
  "XQZWV": "XQZWV",
@@ -44,5 +43,17 @@
  "» n'est pas dans le dictionnaire": "» is not in the dictionary",
  "Définition de «": "Definition of “",
  "Pas de définition trouvée pour «": "No definition found for “",
- "mot du jour : définition": "word of the day: definition"
+ "mot du jour : définition": "word of the day: definition",
+ "moyen français": "Middle French",
+ "ancien français": "Old French",
+ "néerlandais": "Dutch",
+ "latin médiéval": "Medieval Latin",
+ "indo-européen": "Proto-Indo-European",
+ "hébreu": "Hebrew",
+ "créole haïtien": "Haitian Creole",
+ "français": "French",
+ "étyl": "étyl",
+ "siècle": "siècle",
+ "Origine :": "Origin:",
+ "Trouve un mot français en 6 essais : la première lettre est donnée et la longueur change chaque jour (5 à 8 lettres), le même mot pour tout le monde. Vert : bien placée, jaune : ailleurs dans le mot, gris : absente ; les accents ne comptent pas et le mot doit exister. Partie libre de 5 à 8 lettres, grille de couleurs à partager, séries et statistiques par mode. Grandes cases et gros clavier en pixel art à la taille de l'écran, lettres qui se retournent une par une avec un son, et la définition du mot à la fin (Wiktionnaire). Trouve un mot français en 6 essais : la première lettre est donnée et la longueur change chaque jour (5 à 8 lettres), le même mot pour tout le monde. Vert : bien placée, jaune : ailleurs dans le mot, gris : absente ; les accents ne comptent pas et le mot doit exister. Partie libre de 5 à 8 lettres, grille de couleurs à partager, séries et statistiques par mode. Lettres qui se retournent une par une avec un son, et à la fin le mot expliqué : sa définition et son origine (Wiktionnaire).": "Find a French word in 6 tries: the first letter is given and the length changes every day (5 to 8 letters), the same word for everyone. Green: right place, yellow: elsewhere in the word, grey: not in it; accents do not count and the word must exist. A free mode with 5 to 8 letters, a shareable colour grid, streaks and statistics per mode. Big cells and a big pixel-art keyboard that fit the screen, letters that flip one by one with a sound, and the word's definition at the end (Wiktionary). Find a French word in 6 tries: the first letter is given and the length changes every day (5 to 8 letters), the same word for everyone. Green: right place, yellow: elsewhere in the word, grey: not in it; accents don't count and the word must exist. Free play from 5 to 8 letters, colour grid to share, streaks and stats per mode. Letters flip one by one with a sound, and at the end the word is explained: its definition and its origin (Wiktionary)."
 }
