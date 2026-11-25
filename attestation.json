@@ -1,9 +1,9 @@
 {
   "pluginId": "neodex.motdujour",
   "repo": "NDesumeur/neodex-plugin-mot-du-jour",
-  "version": "1.3.0",
-  "sha256": "17687d685d874de5896a5979f06c9c8e86d9367e5e783f3f43047e5b28c4c57c",
-  "approvedAt": "2026-11-24T15:56:18.742Z",
+  "version": "1.4.0",
+  "sha256": "112f80ba32398c8de2c9dc71d6ccec05700a00c587cecd8b34436034d311f331",
+  "approvedAt": "2026-11-25T17:16:44.134Z",
   "neobase": ">=4.0.0",
-  "signature": "+D5yQ42hYBfa4rMv18rtxtVvNZjHHaUoSMOK2UWSwA7SS5giJsjtq896+xLSJ0Kg0ZoIAhaGhgX4qIL38kaOBQ=="
+  "signature": "JS1tlODScv+nMNrlWQpaz3YxhdgbJZY08JqgKPON4nQkpbqVRu9N0XMU6jZXp+Lv98MXmEtCpT5z0WUGkxkECA=="
 }
