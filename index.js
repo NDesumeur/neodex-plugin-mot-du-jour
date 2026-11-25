@@ -60,6 +60,9 @@ export default async function (ctx) {
   const saveGames = () => { clearTimeout(gamesTimer); gamesTimer = setTimeout(() => { gamesTimer = null; folder.write('games', games).catch(() => {}); }, 500); };
   const best = (k, v, higher = true) => { const b = games.best[k]; if (b == null || (higher ? v > b : v < b)) { games.best[k] = v; saveGames(); return true; } return false; };
   const gstore = (k, init) => (games[k] ??= init);  // la section d'un jeu
+  // les trophées de NeoDex (3.4.8 et plus) : succès et records déclarés dans plugin.json ; sur un NeoDex plus ancien, rien ne se passe
+  const trophy = id => { ctx.games?.unlock(id).catch(() => {}); };
+  const trophyRecord = (id, v) => { if (v != null && Number.isFinite(+v)) ctx.games?.record(id, +v).catch(() => {}); };
 function gameLoop(st, appKey, update, draw) {
   cancelAnimationFrame(st.raf);
   const STEP = 1000 / 60; let acc = 0, last = performance.now();
@@ -200,7 +203,7 @@ function mdFinish(won) {
     const y = new Date(); y.setDate(y.getDate() - 1);
     st.streak = won ? (st.last === mdDay(y) ? st.streak + 1 : 1) : 0; st.last = md.cur.day;
   } else st.streak = won ? st.streak + 1 : 0;
-  st.max = Math.max(st.max, st.streak);
+  st.max = Math.max(st.max, st.streak); mdTrophies();
 }
 const mdEndText = () => md.cur.won ? ['Bravo !', 'Superbe !', 'Bien joué !', 'Pas mal !', 'Ouf !', 'De justesse !'][md.cur.guesses.length - 1] + ' Le mot était « ' + md.cur.word + ' ».' : 'Perdu… le mot était « ' + md.cur.word + ' ».';
 function mdMsg(t, err) {
@@ -276,5 +279,12 @@ $('mdGrid').__md = {st: () => md, define: mdDefine, parse: mdParseDef, play: w =
 console.assert(mdScore('ALLEE', 'BALLE').join('') === '11202' && mdScore('TASSE', 'ASSEZ').join('') === '01211' && mdValid('MAISON') && mdValid('MANGEONS') && !mdValid('XQZWV')
   && mdDaily('2026-10-25') === mdDaily('2026-10-25') && mdAnswers(7).every(w => mdValid(mdPlain(w))), 'mot du jour');  // (non indenté : les textes sur plusieurs lignes restent exactement les tiens)
   // ---- fin ----
-  ctx.onOpen(() => { mdOpen(); });
+  // les trophées, tirés des statistiques et des records gardés (aussi à l'ouverture : ce qui a été fait avant compte)
+  function mdTrophies() {
+    const { jour: j, libre: l } = mdSave().stats, d = [0, 1].map(i => j.dist[i] + l.dist[i]);
+    trophyRecord('serie', j.max || null); trophyRecord('jour', j.won || null); trophyRecord('libre', l.won || null);
+    if (j.won >= 1) trophy('premier'); if (j.won >= 10) trophy('dix'); if (j.won >= 50) trophy('cinquante'); if (j.won >= 100) trophy('cent');
+    if (j.max >= 7) trophy('serie7'); if (j.max >= 30) trophy('serie30'); if (d[0] + d[1]) trophy('deux'); if (d[0]) trophy('un'); if (l.won >= 25) trophy('libre25');
+  }
+  ctx.onOpen(() => { mdOpen(); mdTrophies(); });
 }

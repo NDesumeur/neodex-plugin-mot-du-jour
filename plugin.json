@@ -1,7 +1,7 @@
 {
   "id": "neodex.motdujour",
   "name": "Mot du jour",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "author": "NDesumeur",
   "description": "Trouve un mot français en 6 essais : la première lettre est donnée et la longueur change chaque jour (5 à 8 lettres), le même mot pour tout le monde. Vert : bien placée, jaune : ailleurs dans le mot, gris : absente ; les accents ne comptent pas et le mot doit exister. Partie libre de 5 à 8 lettres, grille de couleurs à partager, séries et statistiques par mode. Grandes cases et gros clavier en pixel art à la taille de l'écran, lettres qui se retournent une par une avec un son, et la définition du mot à la fin (Wiktionnaire). Trouve un mot français en 6 essais : la première lettre est donnée et la longueur change chaque jour (5 à 8 lettres), le même mot pour tout le monde. Vert : bien placée, jaune : ailleurs dans le mot, gris : absente ; les accents ne comptent pas et le mot doit exister. Partie libre de 5 à 8 lettres, grille de couleurs à partager, séries et statistiques par mode. Lettres qui se retournent une par une avec un son, et à la fin le mot expliqué : sa définition et son origine (Wiktionnaire).",
   "icon": "icon.png",
@@ -23,5 +23,73 @@
   "permissions": [
     "storage",
     "network:fr.wiktionary.org"
+  ],
+  "succes": [
+    {
+      "id": "premier",
+      "nom": "Le mot du jour",
+      "texte": "Trouver un premier mot du jour"
+    },
+    {
+      "id": "dix",
+      "nom": "Rendez-vous quotidien",
+      "texte": "Trouver 10 mots du jour"
+    },
+    {
+      "id": "cinquante",
+      "nom": "Lexicographe",
+      "texte": "Trouver 50 mots du jour"
+    },
+    {
+      "id": "cent",
+      "nom": "Académicien",
+      "texte": "Trouver 100 mots du jour"
+    },
+    {
+      "id": "serie7",
+      "nom": "Une semaine",
+      "texte": "Trouver le mot du jour 7 jours de suite"
+    },
+    {
+      "id": "serie30",
+      "nom": "Un mois sans faute",
+      "texte": "Trouver le mot du jour 30 jours de suite"
+    },
+    {
+      "id": "deux",
+      "nom": "Du tac au tac",
+      "texte": "Trouver un mot en 2 essais"
+    },
+    {
+      "id": "un",
+      "nom": "Du premier coup",
+      "texte": "Trouver un mot dès le premier essai",
+      "cache": true
+    },
+    {
+      "id": "libre25",
+      "nom": "Jamais assez",
+      "texte": "Trouver 25 mots en partie libre"
+    }
+  ],
+  "records": [
+    {
+      "id": "serie",
+      "nom": "Plus longue série de jours",
+      "sens": "haut",
+      "format": "nombre"
+    },
+    {
+      "id": "jour",
+      "nom": "Mots du jour trouvés",
+      "sens": "haut",
+      "format": "nombre"
+    },
+    {
+      "id": "libre",
+      "nom": "Mots trouvés en partie libre",
+      "sens": "haut",
+      "format": "nombre"
+    }
   ]
 }
